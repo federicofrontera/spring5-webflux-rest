@@ -10,6 +10,6 @@ public class Vendor {
     @Id
     private String id;
 
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
 }
