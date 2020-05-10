@@ -20,6 +20,9 @@ public class Bootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         loadCategories();
+
+        loadVendors();
+
     }
 
     private void loadCategories() {
@@ -27,19 +30,19 @@ public class Bootstrap implements CommandLineRunner {
             System.out.println("Loading category data...");
             categoryRepository.save(Category.builder().
                     description("Fruits")
-                    .build());
+                    .build()).block();
             categoryRepository.save(Category.builder().
                     description("Nuts")
-                    .build());
+                    .build()).block();
             categoryRepository.save(Category.builder().
                     description("Meats")
-                    .build());
+                    .build()).block();
             categoryRepository.save(Category.builder().
                     description("Veggies")
-                    .build());
+                    .build()).block();
             categoryRepository.save(Category.builder().
                     description("Breads")
-                    .build());
+                    .build()).block();
             System.out.println("Finished loading " + categoryRepository.count().block() + " categories");
         }
     }
@@ -50,24 +53,25 @@ public class Bootstrap implements CommandLineRunner {
             vendorRepository.save(Vendor.builder()
                     .firstName("John")
                     .lastName("Smith")
-                    .build());
+                    .build()).block();
             vendorRepository.save(Vendor.builder()
                     .firstName("Smoth")
                     .lastName("Jihn")
-                    .build());
+                    .build()).block();
             vendorRepository.save(Vendor.builder()
                     .firstName("Rachel")
                     .lastName("Ferguson")
-                    .build());
+                    .build()).block();
             vendorRepository.save(Vendor.builder()
                     .firstName("Jane")
                     .lastName("Doe")
-                    .build());
+                    .build()).block();
             vendorRepository.save(Vendor.builder()
                     .firstName("Jim")
                     .lastName("Doe")
-                    .build());
+                    .build()).block();
             System.out.println("Finished loading " + vendorRepository.count().block() + " vendors");
+
         }
     }
 }
