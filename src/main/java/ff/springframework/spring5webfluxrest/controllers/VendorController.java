@@ -15,6 +15,7 @@ public class VendorController {
     public final static String BASE_URL = "/api/v1/vendors";
     private final VendorRepository vendorRepository;
 
+
     public VendorController(VendorRepository vendorRepository) {
         this.vendorRepository = vendorRepository;
     }
@@ -31,7 +32,7 @@ public class VendorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Void> create(@RequestBody Publisher<Vendor> vendorStream){
-        return vendorRepository.saveAll(vendorStream).then();
+    public Flux<Vendor> create(@RequestBody Publisher<Vendor> vendorStream){
+        return vendorRepository.saveAll(vendorStream);
     }
 }

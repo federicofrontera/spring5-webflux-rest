@@ -32,8 +32,8 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Void> create(@RequestBody Publisher<Category> categoryStream){
-        return categoryRepository.saveAll(categoryStream).then();
+    public Flux<Category> create(@RequestBody Publisher<Category> categoryStream){
+        return categoryRepository.saveAll(categoryStream);
     }
 
     @PutMapping("/{id}")
