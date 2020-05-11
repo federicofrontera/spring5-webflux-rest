@@ -35,4 +35,11 @@ public class VendorController {
     public Flux<Vendor> create(@RequestBody Publisher<Vendor> vendorStream){
         return vendorRepository.saveAll(vendorStream);
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Vendor> update(@PathVariable String id, @RequestBody Vendor vendor){
+        vendor.setId(id);
+        return vendorRepository.save(vendor);
+    }
 }
