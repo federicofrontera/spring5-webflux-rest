@@ -1,6 +1,5 @@
 package ff.springframework.spring5webfluxrest.controllers;
 
-import ff.springframework.spring5webfluxrest.domain.Category;
 import ff.springframework.spring5webfluxrest.domain.Vendor;
 import ff.springframework.spring5webfluxrest.repositories.VendorRepository;
 import org.reactivestreams.Publisher;
@@ -21,25 +20,45 @@ public class VendorController {
     }
 
     @GetMapping
-    public Flux<Vendor> getAll(){
+    public Flux<Vendor> getAll() {
         return vendorRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Mono<Vendor> getById(@PathVariable String id){
+    public Mono<Vendor> getById(@PathVariable String id) {
         return vendorRepository.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Flux<Vendor> create(@RequestBody Publisher<Vendor> vendorStream){
+    public Flux<Vendor> create(@RequestBody Publisher<Vendor> vendorStream) {
         return vendorRepository.saveAll(vendorStream);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Vendor> update(@PathVariable String id, @RequestBody Vendor vendor){
+    public Mono<Vendor> update(@PathVariable String id, @RequestBody Vendor vendor) {
         vendor.setId(id);
         return vendorRepository.save(vendor);
+    }
+
+    @PatchMapping("{id}")
+    Mono<Vendor> patch(@PathVariable String id, @RequestBody Vendor vendor) {
+        boolean changes = false;
+        Vendor foundVendor = vendorRepository.findById(id).block();
+
+        if (!foundVendor.getFirstName().equals(vendor.getFirstName())) {
+            foundVendor.setFirstName(vendor.getFirstName());
+            changes = true;
+        }
+        if (!foundVendor.getLastName().equals(vendor.getLastName())) {
+            foundVendor.setLastName(vendor.getLastName());
+            changes = true;
+        }
+        if (changes) {
+            return vendorRepository.save(foundVendor);
+        } else {
+            return Mono.just(foundVendor);
+        }
     }
 }
